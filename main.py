@@ -6,7 +6,8 @@ import os
 from dotenv import load_dotenv  # type: ignore
 from contextlib import redirect_stdout
 import csv
-
+import sys
+import pandas as pd
 
 load_dotenv()
 
@@ -20,6 +21,9 @@ client = "Elekon"
 
 def convert_timestamp(timestamp):
     return datetime.fromisoformat(timestamp).strftime('%d.%m.%Y')
+
+def duration_to_hours(duration: int) -> float:
+    return duration / 3600
 
 url = f"https://reports.api.clockify.me/v1/workspaces/{WORKSPACE_ID}/reports/detailed"
 
@@ -52,4 +56,17 @@ data = list()
 for entry in entries:
     if entry["clientName"] != client:
         continue
-    _row = {"date": entry["date"], "duration": entry["timeInterval"]["duration"]}
+    _row = {"date": convert_timestamp(entry["timeInterval"]["start"]), "duration": entry["timeInterval"]["duration"],
+            "description": entry["description"], "project": entry["projectName"]}
+    data.append(_row)
+
+df = pd.DataFrame(data)
+
+grouped_df = df.groupby(['date', 'description', 'project'], as_index=False).agg({'duration': 'sum'})
+
+with redirect_stdout(sys.stdout) as csv_output:
+    writer = csv.writer(csv_output,)
+    writer.writerow(['Datum', 'Popis (Projekt a úkol)', 'Odpracovaný čas'])
+
+    for index, row in grouped_df.iterrows():
+        writer.writerow([row["date"], row["description"], row["duration"]])
