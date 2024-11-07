@@ -1,6 +1,7 @@
+from jinja2 import Environment, FileSystemLoader
+import pdfkit
 import json
 from datetime import datetime
-
 import requests
 import os
 from dotenv import load_dotenv  # type: ignore
@@ -8,6 +9,10 @@ from contextlib import redirect_stdout
 import csv
 import sys
 import pandas as pd
+from os.path import join, basename, exists
+from os import mkdir
+
+TARGETDIR = "dist/"
 
 load_dotenv()
 
@@ -55,6 +60,7 @@ if response.status_code != 200:
 entries = response.json()
 entries = entries["timeentries"]
 data = list()
+output_data = list()
 for entry in entries:
     if entry["clientName"] != client:
         continue
@@ -72,3 +78,20 @@ with redirect_stdout(sys.stdout) as csv_output:
 
     for index, row in grouped_df.iterrows():
         writer.writerow([row["date"], row["description"], duration_to_hours(row["duration"])])
+        output_data.append(row)
+
+if not exists(TARGETDIR):
+    mkdir(TARGETDIR)
+
+# Load the template from file
+file_loader = FileSystemLoader('templates')
+env = Environment(loader=file_loader)
+template = env.get_template('template.html')
+
+# Define a macro
+output = template.render(entries=output_data)
+
+with open(f'{TARGETDIR}/result.html', 'w') as res:
+    res.write(output)
+
+pdfkit.from_string(output, output_path=f'{TARGETDIR}/odpracovany_cas.pdf')
