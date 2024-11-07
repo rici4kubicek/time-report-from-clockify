@@ -82,7 +82,7 @@ with redirect_stdout(sys.stdout) as csv_output:
         row["duration"] = duration_to_hours(row["duration"])
         writer.writerow([row["date"], row["description"], row["duration"]])
         duration_sum += row["duration"]
-        output_data.append(row)
+        output_data.append({'date': row["date"], 'description': f"{row['project']}: {row["description"]}", 'duration': row["duration"]})
 
 if not exists(TARGETDIR):
     mkdir(TARGETDIR)
