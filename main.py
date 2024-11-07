@@ -23,7 +23,9 @@ def convert_timestamp(timestamp):
     return datetime.fromisoformat(timestamp).strftime('%d.%m.%Y')
 
 def duration_to_hours(duration: int) -> float:
-    return duration / 3600
+    hours = duration / 3600
+    hours = round(hours * 4) / 4
+    return hours
 
 url = f"https://reports.api.clockify.me/v1/workspaces/{WORKSPACE_ID}/reports/detailed"
 
@@ -66,7 +68,7 @@ grouped_df = df.groupby(['date', 'description', 'project'], as_index=False).agg(
 
 with redirect_stdout(sys.stdout) as csv_output:
     writer = csv.writer(csv_output,)
-    writer.writerow(['Datum', 'Popis (Projekt a úkol)', 'Odpracovaný čas'])
+    writer.writerow(['Datum', 'Popis (Projekt a úkol)', 'Odpracovaný čas [h]'])
 
     for index, row in grouped_df.iterrows():
-        writer.writerow([row["date"], row["description"], row["duration"]])
+        writer.writerow([row["date"], row["description"], duration_to_hours(row["duration"])])
