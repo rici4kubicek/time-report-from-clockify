@@ -72,6 +72,8 @@ df = pd.DataFrame(data)
 
 grouped_df = df.groupby(['date', 'description', 'project'], as_index=False).agg({'duration': 'sum'})
 
+duration_sum = 0
+
 with redirect_stdout(sys.stdout) as csv_output:
     writer = csv.writer(csv_output,)
     writer.writerow(['Datum', 'Popis (Projekt a úkol)', 'Odpracovaný čas [h]'])
@@ -79,6 +81,7 @@ with redirect_stdout(sys.stdout) as csv_output:
     for index, row in grouped_df.iterrows():
         row["duration"] = duration_to_hours(row["duration"])
         writer.writerow([row["date"], row["description"], row["duration"]])
+        duration_sum += row["duration"]
         output_data.append(row)
 
 if not exists(TARGETDIR):
@@ -90,7 +93,7 @@ env = Environment(loader=file_loader)
 template = env.get_template('template.html')
 
 # Define a macro
-output = template.render(entries=output_data)
+output = template.render(entries=output_data, duration_sum=duration_sum)
 
 with open(f'{TARGETDIR}/result.html', 'w') as res:
     res.write(output)

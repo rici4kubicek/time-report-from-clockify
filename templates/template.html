@@ -16,6 +16,11 @@
             <th width="20%">{{ entry.duration }}</th>
         </tr>
     {% endfor %}
+
+    <tr class="notes-header-major">
+        <th width="80%" colspan="2">Celkem:</th>
+        <th width="20%">{{ duration_sum }}</th>
+    </tr>
 </table>
 
 {% endblock %}
