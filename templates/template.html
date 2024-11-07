@@ -4,18 +4,17 @@
 <h1>Odpracovaný čas</h1>
 <table class="notes">
     <tr class="notes-header-major">
-        <th width="20%">Datum</th>
-        <th width="20%">Popis (Projekt a úkol)</th>
+        <th width="15%">Datum</th>
+        <th width="65%">Popis (Projekt a úkol)</th>
         <th width="20%">Odpracovaný čas [h]</th>
     </tr>
 
     {% for entry in entries %}
-
-    <tr>
-        <th width="20%">{{ entry.date }}</th>
-        <th width="20%">{{ entry.description}}</th>
-        <th width="20%">{{ entry.duration }}</th>
-    </tr>
+        <tr>
+            <th width="15%">{{ entry.date }}</th>
+            <th width="65%">{{ entry.description}}</th>
+            <th width="20%">{{ entry.duration }}</th>
+        </tr>
     {% endfor %}
 </table>
 
