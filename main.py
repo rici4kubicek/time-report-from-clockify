@@ -77,7 +77,8 @@ with redirect_stdout(sys.stdout) as csv_output:
     writer.writerow(['Datum', 'Popis (Projekt a úkol)', 'Odpracovaný čas [h]'])
 
     for index, row in grouped_df.iterrows():
-        writer.writerow([row["date"], row["description"], duration_to_hours(row["duration"])])
+        row["duration"] = duration_to_hours(row["duration"])
+        writer.writerow([row["date"], row["description"], row["duration"]])
         output_data.append(row)
 
 if not exists(TARGETDIR):
