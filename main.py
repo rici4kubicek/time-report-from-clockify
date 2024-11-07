@@ -82,7 +82,12 @@ with redirect_stdout(sys.stdout) as csv_output:
         row["duration"] = duration_to_hours(row["duration"])
         writer.writerow([row["date"], row["description"], row["duration"]])
         duration_sum += row["duration"]
-        output_data.append({'date': row["date"], 'description': f"{row['project']}: {row["description"]}", 'duration': row["duration"]})
+        entry = {'date': row["date"], 'duration': row["duration"]}
+        if row["description"] != "":
+            entry['description'] = f"{row['project']}: {row['description']}"
+        else:
+            entry['description'] = row['project']
+        output_data.append(entry)
 
 if not exists(TARGETDIR):
     mkdir(TARGETDIR)
@@ -98,4 +103,9 @@ output = template.render(entries=output_data, duration_sum=duration_sum)
 with open(f'{TARGETDIR}/result.html', 'w') as res:
     res.write(output)
 
-pdfkit.from_string(output, output_path=f'{TARGETDIR}/odpracovany_cas.pdf')
+options = {
+    'page-size': 'A4',
+    'encoding': 'UTF-8'
+}
+
+pdfkit.from_string(output, output_path=f'{TARGETDIR}/odpracovany_cas.pdf', options=options)

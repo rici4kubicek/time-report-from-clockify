@@ -10,16 +10,16 @@
     </tr>
 
     {% for entry in entries %}
-        <tr>
-            <th width="15%">{{ entry.date }}</th>
-            <th width="65%">{{ entry.description}}</th>
-            <th width="20%">{{ entry.duration }}</th>
+        <tr class="notes-entries">
+            <td width="15%" class="notes-entries-other">{{ entry.date }}</td>
+            <td width="65%" class="notes-entries-description">{{ entry.description}}</td>
+            <td width="20%" class="notes-entries-other">{{ entry.duration }}</td>
         </tr>
     {% endfor %}
 
-    <tr class="notes-header-major">
-        <th width="80%" colspan="2">Celkem:</th>
-        <th width="20%">{{ duration_sum }}</th>
+    <tr class="notes-header-minor">
+        <td width="80%" colspan="2">Celkem:</td>
+        <td width="20%" align="center">{{ duration_sum }}</td>
     </tr>
 </table>
 

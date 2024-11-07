@@ -14,15 +14,33 @@
         }
         .notes {
             border: 1px solid gray;
-            width: 90%;
+            width: 100%;
             break-inside: avoid;
-            margin-left: 5%;
+            border-collapse: collapse;
+            display: table-row-group;
         }
         .notes-header-major {
             background-color: rgba(192, 192, 192, 0.35);
+            border: 1px solid gray;
         }
         .notes-header-minor {
             background-color: rgb(192, 192, 192);
+            font-weight: bold;
+            border: 1px solid gray;
+        }
+        .notes-entries {
+            text-align: left;
+            border: 1px solid gray;
+        }
+        .notes-entries td {
+            border: 1px solid gray;
+            page-break-inside: avoid;
+        }
+        .notes-entries-description {
+            padding-left: 10px;
+        }
+        .notes-entries-other {
+            text-align: center;
         }
       </style>
         <!--STYLES END-->
