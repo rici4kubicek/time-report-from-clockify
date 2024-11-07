@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    {% block head %}
+        <!-- Viewport mobile tag for sensible mobile support -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta charset="utf-8">
+
+        <!--STYLES-->
+
+      <style>
+        h1 {
+            text-align: center;
+        }
+        .notes {
+            border: 1px solid gray;
+            width: 90%;
+            break-inside: avoid;
+            margin-left: 5%;
+        }
+        .notes-header-major {
+            background-color: rgba(192, 192, 192, 0.35);
+        }
+        .notes-header-minor {
+            background-color: rgb(192, 192, 192);
+        }
+      </style>
+        <!--STYLES END-->
+        <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+
+{% block header %}{% endblock %}
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}
+
+<!--SCRIPTS-->
+
+<!--SCRIPTS END-->
+{% block localScripts %}{% endblock %}
+</body>
+</html>

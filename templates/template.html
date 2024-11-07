@@ -1,0 +1,24 @@
+{% extends "header.html" %}
+{% block title %}Richard Kubíček{% endblock %}
+{% block content %}
+<h1>Odpracovaný čas</h1>
+<table class="notes">
+    <tr class="notes-header-major">
+        <th width="20%">Datum</th>
+        <th width="20%">Popis (Projekt a úkol)</th>
+        <th width="20%">Odpracovaný čas [h]</th>
+    </tr>
+
+    {% for entry in entries %}
+
+    <tr>
+        <th width="20%">{{ entry.date }}</th>
+        <th width="20%">{{ entry.description}}</th>
+        <th width="20%">{{ entry.duration }}</th>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
+{% block footer %}
+{% endblock %}
